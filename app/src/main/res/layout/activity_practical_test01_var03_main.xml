@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:saveEnabled="false"/>
 
     <LinearLayout
         android:id="@+id/buttons_add_minus_container"
@@ -46,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:saveEnabled="false"/>
 
     <EditText
         android:id="@+id/result_textview"
@@ -54,7 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:editable="false"/>
+        android:editable="false"
+        android:saveEnabled="false"/>
 
     <Button
         android:id="@+id/navigate_second_app_button"

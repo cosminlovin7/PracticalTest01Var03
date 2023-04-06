@@ -4,4 +4,6 @@ public class Constants {
     public static final String TAG = "cosminel_debugheaza";
     public static final String ONLY_NUMBERS = "Please introduce correct numbers";
     public static final String FIRST_NUMBER_TEXTVIEW = "FIRST_NUMBER_TEXTVIEW";
+    public static final String SECOND_NUMBER_TEXTVIEW = "SECOND_NUMBER_TEXTVIEW";
+    public static final String RESULT_TEXTVIEW = "RESULT_TEXTVIEW";
 }

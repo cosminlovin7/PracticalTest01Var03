@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.eim.practicaltest01var03;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -85,5 +86,29 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
 
         buttonAdd.setOnClickListener(buttonClickListener);
         buttonMinus.setOnClickListener(buttonClickListener);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(Constants.FIRST_NUMBER_TEXTVIEW, firstNumberEditText.getText().toString());
+        outState.putString(Constants.SECOND_NUMBER_TEXTVIEW, secondNumberEditText.getText().toString());
+        outState.putString(Constants.RESULT_TEXTVIEW, resultEditText.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(Constants.FIRST_NUMBER_TEXTVIEW)) {
+            firstNumberEditText.setText(savedInstanceState.get(Constants.FIRST_NUMBER_TEXTVIEW).toString());
+        }
+        if (savedInstanceState.containsKey(Constants.SECOND_NUMBER_TEXTVIEW)) {
+            secondNumberEditText.setText(savedInstanceState.get(Constants.SECOND_NUMBER_TEXTVIEW).toString());
+        }
+        if (savedInstanceState.containsKey(Constants.RESULT_TEXTVIEW)) {
+            resultEditText.setText(savedInstanceState.get(Constants.RESULT_TEXTVIEW).toString());
+        }
     }
 }
