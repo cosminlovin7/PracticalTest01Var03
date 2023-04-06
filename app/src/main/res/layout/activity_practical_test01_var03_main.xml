@@ -8,11 +8,12 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/number_textview"
+        android:id="@+id/first_number_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="20dp"
+        android:inputType="numberDecimal"/>
 
     <LinearLayout
         android:id="@+id/buttons_add_minus_container"
@@ -40,7 +41,15 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/message_textview"
+        android:id="@+id/second_number_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/result_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
