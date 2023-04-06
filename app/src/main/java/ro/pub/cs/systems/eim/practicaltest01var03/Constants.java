@@ -6,4 +6,9 @@ public class Constants {
     public static final String FIRST_NUMBER_TEXTVIEW = "FIRST_NUMBER_TEXTVIEW";
     public static final String SECOND_NUMBER_TEXTVIEW = "SECOND_NUMBER_TEXTVIEW";
     public static final String RESULT_TEXTVIEW = "RESULT_TEXTVIEW";
+    public static final String CORRECT_OP = "Correct code returned.";
+    public static final String INCORRECT_OP = "Incorrect code returned.";
+    public static final int REQUEST_CODE = 1;
+    public static final int CORRECT_CODE = 1;
+    public static final int INCORRECT_CODE = 2;
 }

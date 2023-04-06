@@ -1,8 +1,10 @@
 package ro.pub.cs.systems.eim.practicaltest01var03;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
     private EditText resultEditText;
     private Button buttonAdd;
     private Button buttonMinus;
+    private Button buttonNavigateSecondaryApp;
 
     private boolean isCorrectString(final String number) {
         if (number.length() == 0)
@@ -50,7 +53,7 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                         Double secondIntNumber = Double.parseDouble(secondNumber);
                         double result = firstIntNumber + secondIntNumber;
 
-                        resultEditText.setText(firstNumber +" + " + secondNumber + " = " + result);
+                        resultEditText.setText(firstNumber + " + " + secondNumber + " = " + result);
                     } else {
                         Toast.makeText(PracticalTest01Var03MainActivity.this, Constants.ONLY_NUMBERS, Toast.LENGTH_SHORT).show();
                     }
@@ -64,9 +67,16 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                         Double secondIntNumber = Double.parseDouble(secondNumber);
                         double result = firstIntNumber - secondIntNumber;
 
-                        resultEditText.setText(firstNumber +" - " + secondNumber + " = " + result);
+                        resultEditText.setText(firstNumber + " - " + secondNumber + " = " + result);
                     } else {
                         Toast.makeText(PracticalTest01Var03MainActivity.this, Constants.ONLY_NUMBERS, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.navigate_second_app_button:
+                    if (!resultEditText.getText().toString().equalsIgnoreCase("")) {
+                        Intent intent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03SecondaryActivity.class);
+                        intent.putExtra(Constants.RESULT_TEXTVIEW, resultEditText.getText().toString());
+                        startActivityForResult(intent, Constants.REQUEST_CODE);
                     }
                     break;
             }
@@ -83,9 +93,11 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
         resultEditText = findViewById(R.id.result_textview);
         buttonAdd = findViewById(R.id.button_add);
         buttonMinus = findViewById(R.id.button_minus);
+        buttonNavigateSecondaryApp = findViewById(R.id.navigate_second_app_button);
 
         buttonAdd.setOnClickListener(buttonClickListener);
         buttonMinus.setOnClickListener(buttonClickListener);
+        buttonNavigateSecondaryApp.setOnClickListener(buttonClickListener);
     }
 
     @Override
@@ -100,15 +112,42 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
+        String message = "";
+        
         if (savedInstanceState.containsKey(Constants.FIRST_NUMBER_TEXTVIEW)) {
             firstNumberEditText.setText(savedInstanceState.get(Constants.FIRST_NUMBER_TEXTVIEW).toString());
+
+            if (!firstNumberEditText.getText().toString().equalsIgnoreCase(""))
+                message += "First Number:" + firstNumberEditText.getText().toString();
         }
         if (savedInstanceState.containsKey(Constants.SECOND_NUMBER_TEXTVIEW)) {
             secondNumberEditText.setText(savedInstanceState.get(Constants.SECOND_NUMBER_TEXTVIEW).toString());
+
+            if (!secondNumberEditText.getText().toString().equalsIgnoreCase(""))
+                message += " Second Number:" + secondNumberEditText.getText().toString();
         }
         if (savedInstanceState.containsKey(Constants.RESULT_TEXTVIEW)) {
             resultEditText.setText(savedInstanceState.get(Constants.RESULT_TEXTVIEW).toString());
+
+            if (!resultEditText.getText().toString().equalsIgnoreCase(""))
+                message += " Result:" + resultEditText.getText().toString();
+        }
+        
+        if (message != "") {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == Constants.REQUEST_CODE) {
+            if (resultCode == Constants.REQUEST_CODE) {
+                Toast.makeText(this, Constants.CORRECT_OP, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, Constants.INCORRECT_OP, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
