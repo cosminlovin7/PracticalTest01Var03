@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
     private Button buttonAdd;
     private Button buttonMinus;
     private Button buttonNavigateSecondaryApp;
+    private PracticalTest01Var03BroadcastReceiver practicalTest01Var03BroadcastReceiver;
+    private IntentFilter intentFilter;
 
     private boolean isCorrectString(final String number) {
         if (number.length() == 0)
@@ -43,6 +46,7 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
             Integer buttonId = view.getId();
             String firstNumber = null;
             String secondNumber = null;
+
             switch(buttonId) {
                 case R.id.button_add:
                     firstNumber = firstNumberEditText.getText().toString();
@@ -52,6 +56,12 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                         Double firstIntNumber = Double.parseDouble(firstNumber);
                         Double secondIntNumber = Double.parseDouble(secondNumber);
                         double result = firstIntNumber + secondIntNumber;
+
+                        Intent intent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03Service.class);
+                        intent.putExtra(Constants.FIRST_NUMBER_TEXTVIEW, firstNumber);
+                        intent.putExtra(Constants.SECOND_NUMBER_TEXTVIEW, secondNumber);
+
+                        startService(intent);
 
                         resultEditText.setText(firstNumber + " + " + secondNumber + " = " + result);
                     } else {
@@ -67,6 +77,12 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                         Double secondIntNumber = Double.parseDouble(secondNumber);
                         double result = firstIntNumber - secondIntNumber;
 
+                        Intent intent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03Service.class);
+                        intent.putExtra(Constants.FIRST_NUMBER_TEXTVIEW, firstNumber);
+                        intent.putExtra(Constants.SECOND_NUMBER_TEXTVIEW, secondNumber);
+
+                        startService(intent);
+
                         resultEditText.setText(firstNumber + " - " + secondNumber + " = " + result);
                     } else {
                         Toast.makeText(PracticalTest01Var03MainActivity.this, Constants.ONLY_NUMBERS, Toast.LENGTH_SHORT).show();
@@ -74,9 +90,9 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigate_second_app_button:
                     if (!resultEditText.getText().toString().equalsIgnoreCase("")) {
-                        Intent intent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03SecondaryActivity.class);
-                        intent.putExtra(Constants.RESULT_TEXTVIEW, resultEditText.getText().toString());
-                        startActivityForResult(intent, Constants.REQUEST_CODE);
+                        Intent activityIntent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03SecondaryActivity.class);
+                        activityIntent.putExtra(Constants.RESULT_TEXTVIEW, resultEditText.getText().toString());
+                        startActivityForResult(activityIntent, Constants.REQUEST_CODE);
                     }
                     break;
             }
@@ -98,6 +114,10 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(buttonClickListener);
         buttonMinus.setOnClickListener(buttonClickListener);
         buttonNavigateSecondaryApp.setOnClickListener(buttonClickListener);
+
+        practicalTest01Var03BroadcastReceiver = new PracticalTest01Var03BroadcastReceiver();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.DIFF_ACTION);
     }
 
     @Override
@@ -149,5 +169,25 @@ public class PracticalTest01Var03MainActivity extends AppCompatActivity {
                 Toast.makeText(this, Constants.INCORRECT_OP, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Intent intent = new Intent(PracticalTest01Var03MainActivity.this, PracticalTest01Var03Service.class);
+        stopService(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(practicalTest01Var03BroadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(practicalTest01Var03BroadcastReceiver, intentFilter);
     }
 }
